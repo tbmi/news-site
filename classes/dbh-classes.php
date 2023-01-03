@@ -3,11 +3,7 @@
 class Dbh {
 	protected function connect() {
 		$serverName = "TAKY-PC/SQLEXPRESS";
-		$connectionOptions = [
-			"Database"=>"NewsSite",
-			"Uid"=>"",
-			"PWD"=>""
-		];
+		$connectionOptions = array("Database"=>"NewsSite", "Uid"=>"", "PWD"=>"");
 
 		$conn = sqlsrv_connect($serverName, $connectionOptions);
 		

@@ -4,18 +4,20 @@ class Signup extends Dbh {
 	protected function checkUser($uid, $email) {
 		try
 		{
-			$conn = connect();
+			$dbh = new Dbh();
+			$conn = $dbh->connect();
 			$tsql = "SELECT users_id FROM users WHERE users_id = ? OR users_email = ?";
 			$status = sqlsrv_query($conn, $tsql);
+			$statusRows = sqlsrv_num_rows($status);
 
-			if(!$status->execute(array($uid, $email))) {
+			if(!$status) {
 				$status == null;
 				header("location: ../signup.html?error=statusfailed");
 				exit();
 			}
 
-			$resultCheck;
-			if($status->rowCount() > 0) {
+			$resultCheck = "";
+			if($statusRows > 0) {
 				$resultCheck = false;
 			}
 			else {
@@ -33,14 +35,15 @@ class Signup extends Dbh {
 	protected function setUser($uid, $password, $email) {
 		try
 		{
-			$conn = connect();
+			$dbh = new Dbh();
+			$conn = $dbh->connect();
 			$tsql = "INSERT INTO users (users_uid, users_pwd, users_email) VALUES (?, ?, ?)";
 
 			$hashedPwd = password_hash($password, PASSWORD_DEFAULT);
 
 			$status = sqlsrv_query($conn, $tsql);
 
-			if(!$status->execute(array($uid, $hashedPwd, $email))) {
+			if(!$status) {
 				$status == null;
 				header("location: ../signup.html?error=statusfailed");
 				exit();

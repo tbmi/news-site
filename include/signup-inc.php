@@ -6,12 +6,11 @@ if(isset($_POST["submit"]))
 	$email = $_POST["email"];
 	$password = $_POST["password"];
 	$rptpassword = $_POST["rptpassword"];
-	$remember = $_POST["remember"];
 
 	include "../classes/dbh-classes.php";
 	include "../classes/signup-classes.php";
 	include "../classes/signup-classes_contr.php";
-	$signup = new SignupContr($uid, $email, $password, $rptpassword, $remember);
+	$signup = new SignupContr($uid, $email, $password, $rptpassword);
 
 	$signup->signupUser();
 
