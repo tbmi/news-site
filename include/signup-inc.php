@@ -1,11 +1,10 @@
 <?php
 
-if(isset($_POST["submit"]))
-{
-	$uid = $_POST["uid"];
-	$email = $_POST["email"];
-	$password = $_POST["password"];
-	$rptpassword = $_POST["rptpassword"];
+if(isset($_POST['submit'])) {
+	$uid = $_POST['uid'];
+	$email = $_POST['email'];
+	$password = $_POST['password'];
+	$rptpassword = $_POST['rptpassword'];
 
 	include "../classes/dbh-classes.php";
 	include "../classes/signup-classes.php";
@@ -14,5 +13,7 @@ if(isset($_POST["submit"]))
 
 	$signup->signupUser();
 
-	header("location: ../index.html?error=none");
+	header("location: ../index.php?error=none");
 }
+
+?>

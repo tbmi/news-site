@@ -9,11 +9,12 @@
     <title>News Site</title>
     <link rel="stylesheet" href="StyleSheet.css" />
     <script src="https://kit.fontawesome.com/c99ab2e3d5.js" crossorigin="anonymous"></script>
+    <script src="include/jquery-3.6.3.js"></script>
 </head>
 <body>
     <nav class="navbar">
         <div class="navbar__container">
-            <a href="index.html" id="navbar__logo">Fortinitey</a>
+            <a href="index.php" id="navbar__logo">The Weekly Inspect</a>
             <div id="mobile-menu" class="navbar__toggle">
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -21,31 +22,31 @@
             </div>
             <ul class="navbar__menu">
                 <li class="navbar__item">
-                    <a id="home-page" href="index.html" class="navbar__links">Home</a>
+                    <a id="home-page" href="index.php" class="navbar__links">Home</a>
                 </li>
                 <li class="navbar__item">
-                    <a id="about-page" href="index.html#about" class="navbar__links">About</a>
+                    <a id="about-page" href="index.php#about" class="navbar__links">About</a>
                 </li>
                 <li class="navbar__item">
-                    <a id="tech-page" href="technology.html" class="navbar__links">Technology</a>
+                    <a id="tech-page" href="technology.php" class="navbar__links">Technology</a>
                 </li>
                 <li class="navbar__item">
-                    <a id="econ-page" href="economics.html" class="navbar__links">Economics</a>
+                    <a id="econ-page" href="economics.php" class="navbar__links">Economics</a>
                 </li>
                 <li class="navbar__item">
-                    <a id="politic-page" href="politics.html" class="navbar__links">Politics</a>
+                    <a id="politic-page" href="politics.php" class="navbar__links">Politics</a>
                 </li>
                 <li class="navbar__button">
-                    <a id="login" href="login.html" class="button">Log In</a>
+                    <a id="login" href="login.php" class="button">Log In</a>
                 </li>
             </ul>  
         </div>
     </nav>
     <div id="home" class="hero">
         <div class="hero__container">
-            <h1 class="hero__heading">Every Day <span>Every Week</span></h1>
-            <p class="hero__description"><strong>Updated WEEKLY</strong></p>
-            <button class="main__btn"><a href="#">Explore</a></button>
+            <h1 class="hero__heading">Top Three <span>Every Week</span></h1>
+            <p class="hero__description"><strong>in Tech, Economics, and Politics</strong></p>
+            <button class="main__btn"><a href="signup.php">Sign Up</a></button>
         </div>
     </div>
 
@@ -55,9 +56,10 @@
                 <img src="images/placeholder.png" alt="Group Image" />
             </div>
             <div class="main__content">
-                <h1>Who are we?</h1>
-                <h2>We serve the week's top 3 headlines in Tech, Economics, and Politics</h2>
-                <p>Check them out in the bar at the top</p>
+                <h1>What do we do?</h1>
+                <h2>We search for the most important news of the week</h2>
+                <p class="desktop">Check them out in the bar at the top</p>
+                <p class="mobile">Check them out in the burger menu at the top</p>
             </div>
         </div>
     </div>
