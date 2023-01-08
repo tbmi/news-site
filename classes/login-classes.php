@@ -1,27 +1,27 @@
 <?php
+require_once("dbh-classes.php");
+class Login extends Dbh
+{
+	protected function getUser($password, $uid)
+	{
+		try {
+			$conn = $this->OpenConnection();
 
-class Login extends Dbh {
-
-	protected function getUser($password, $uid) {
-		try
-		{
-			$dbh = new Dbh();
-			$conn = $dbh->connect();
 			$tsql = "SELECT users_pwd FROM users WHERE users_id = ? OR users_email = ?";
 
-			$status = sqlsrv_query($conn, $tsql, array(), array( "Scrollable" => 'static' ));
+			$status = sqlsrv_query($conn, $tsql, array($uid), array("Scrollable" => 'static'));
 			$statusRows = sqlsrv_num_rows($status);
 			$statusFetch = sqlsrv_fetch_array($status, SQLSRV_FETCH_ASSOC);
 
-			if(!$status) {
+			if (!$status) {
 				$status == null;
-				header("location: ../login.html?error=statusfailed");
+				header("location: ../login.php?error=statusfailed");
 				exit();
 			}
-			
+
 			if ($statusRows == 0) {
 				$status = null;
-				header("location: ../login.html?error=usernotfound");
+				header("location: ../login.php?error=usernotfounduid");
 				exit();
 			}
 
@@ -30,39 +30,38 @@ class Login extends Dbh {
 
 			if ($checkPwd == false) {
 				$status = null;
-				header("location: ../login.html?error=wrongpassword");
+				header("location: ../login.php?error=wrongpassword");
 				exit();
-			}
-			elseif ($checkPwd == true) {
+			} elseif ($checkPwd == true) {
 				$tsql = "SELECT * FROM users WHERE users_id = ? OR users_email = ? AND users_pwd = ?";
 				$status = sqlsrv_query($conn, $tsql);
-				
-				if(!$status) {
+
+				if (!$status) {
 					$status == null;
-					header("location: ../login.html?error=statusfailed");
+					header("location: ../login.php?error=statusfailed");
 					exit();
 				}
 
 				if ($statusRows == 0) {
-				$status = null;
-				header("location: ../login.html?error=usernotfound");
-				exit();
+					$status = null;
+					header("location: ../login.php?error=usernotfoundpwd");
+					exit();
 				}
 
 				$user = $statusFetch;
-
+				$testfile = fopen("../test.txt", "w");
+				fwrite($testfile, "check5");
+				fclose($testfile);
 				session_start();
-				$_SESSION["userid"] = $user[0]["users_id"];
-				$_SESSION["useruid"] = $user[0]["users_uid"];
+				$_SESSION['userid'] = $user[0]["users_id"];
+				$_SESSION['useruid'] = $user[0]["users_uid"];
 
 				$status = null;
 			}
 
 			$status = null;
+		} catch (Exception $e) {
+			echo ("Error!");
 		}
-		catch(Exception $e)
-        {
-            echo("Error!");
-        }
 	}
 }

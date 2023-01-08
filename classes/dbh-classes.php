@@ -1,16 +1,15 @@
 <?php
-
 class Dbh {
-	protected function connect() {
+	protected function OpenConnection()
+	{
 		$serverName = "TAKY-PC/SQLEXPRESS";
-		$connectionOptions = array("Database"=>"NewsSite", "Uid"=>"", "PWD"=>"");
-
+		$connectionOptions = array("Database"=>"NewsSite",
+			"Uid"=>"", "PWD"=>"");
 		$conn = sqlsrv_connect($serverName, $connectionOptions);
-		
-		if ($conn = false)
-			die( print_r( sqlsrv_errors(), true));
-		else echo 'Connection Success';
+		if($conn == false)
+			die(print_r(sqlsrv_errors(), true));
 
 		return $conn;
 	}
 }
+?>

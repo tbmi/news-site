@@ -1,7 +1,6 @@
 <?php
 
-if(isset($_POST["submit"]))
-{
+if (isset($_POST["submit"])) {
 	$uid = $_POST["uid"];
 	$password = $_POST["password"];
 	$remember = $_POST["remember"];
@@ -9,9 +8,9 @@ if(isset($_POST["submit"]))
 	include "../classes/dbh-classes.php";
 	include "../classes/login-classes.php";
 	include "../classes/login-classes_contr.php";
-	$signup = new LoginContr($uid, $password, $remember);
+	$login = new LoginContr($uid, $password, $remember);
 
 	$login->loginUser();
 
-	header("location: ../index.html?error=none");
+	header("location: ../index.php?error=none");
 }

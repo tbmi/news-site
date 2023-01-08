@@ -6,14 +6,13 @@ if(isset($_POST['submit'])) {
 	$password = $_POST['password'];
 	$rptpassword = $_POST['rptpassword'];
 
-	include "../classes/dbh-classes.php";
-	include "../classes/signup-classes.php";
-	include "../classes/signup-classes_contr.php";
+	include '../classes/dbh-classes.php';
+	include '../classes/signup-classes.php';
+	include '../classes/signup-classes_contr.php';
 	$signup = new SignupContr($uid, $email, $password, $rptpassword);
 
 	$signup->signupUser();
 
-	header("location: ../index.php?error=none");
+	header('Location: ../index.php');
+	exit();
 }
-
-?>
