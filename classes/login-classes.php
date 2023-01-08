@@ -1,65 +1,68 @@
 <?php
-require_once("dbh-classes.php");
-class Login extends Dbh
+
+class Login
 {
-	protected function getUser($password, $uid)
+	protected function getUser($u_id, $password)
 	{
 		try {
-			$conn = $this->OpenConnection();
-
+			$serverName = "TAKY-PC\SQLEXPRESS";
+			$connectionOptions = array("Database"=>"NewsSite",
+				"Uid"=>"", "PWD"=>"");
+			$conn = sqlsrv_connect($serverName, $connectionOptions);
+			if($conn == false) {
+				fwrite(fopen("test.txt", "a"), "getUser Connection Failed \n"); fclose(fopen("test.txt", "a"));
+				die(print_r(sqlsrv_errors(), true));
+			}
+			else {
+				fwrite(fopen("test.txt", "a"), "getUser Connection Established \n"); fclose(fopen("test.txt", "a"));
+			}
 			$tsql = "SELECT users_pwd FROM users WHERE users_id = ? OR users_email = ?";
+			$parameters = array($u_id, $u_id);
+			$stmt = sqlsrv_query($conn, $tsql, $parameters, array("Scrollable" => 'static'));
 
-			$status = sqlsrv_query($conn, $tsql, array($uid), array("Scrollable" => 'static'));
-			$statusRows = sqlsrv_num_rows($status);
-			$statusFetch = sqlsrv_fetch_array($status, SQLSRV_FETCH_ASSOC);
-
-			if (!$status) {
-				$status == null;
+			if (!$stmt) {
 				header("location: ../login.php?error=statusfailed");
 				exit();
 			}
 
-			if ($statusRows == 0) {
-				$status = null;
+			$stmtRows = sqlsrv_num_rows($stmt);
+			if (!$stmtRows or $stmt == 0) {
+				$stmt = false;
 				header("location: ../login.php?error=usernotfounduid");
 				exit();
 			}
 
-			$pwdHashed = $statusFetch;
+			$stmtFetch = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+			$pwdHashed = $stmtFetch;
 			$checkPwd = password_verify($password, $pwdHashed[0]["users_pwd"]);
 
-			if ($checkPwd == false) {
-				$status = null;
+			if (!$checkPwd) {
+				$stmt = false;
 				header("location: ../login.php?error=wrongpassword");
 				exit();
 			} elseif ($checkPwd == true) {
 				$tsql = "SELECT * FROM users WHERE users_id = ? OR users_email = ? AND users_pwd = ?";
-				$status = sqlsrv_query($conn, $tsql);
 
-				if (!$status) {
-					$status == null;
+				if (!$stmt) {
 					header("location: ../login.php?error=statusfailed");
 					exit();
 				}
 
-				if ($statusRows == 0) {
-					$status = null;
+				if ($stmtRows == 0) {
+					$stmt = false;
 					header("location: ../login.php?error=usernotfoundpwd");
 					exit();
 				}
 
-				$user = $statusFetch;
-				$testfile = fopen("../test.txt", "w");
-				fwrite($testfile, "check5");
-				fclose($testfile);
+				$user = $stmtFetch;
 				session_start();
 				$_SESSION['userid'] = $user[0]["users_id"];
 				$_SESSION['useruid'] = $user[0]["users_uid"];
 
-				$status = null;
+				$stmt = false;
 			}
 
-			$status = null;
+			$stmt = false;
 		} catch (Exception $e) {
 			echo ("Error!");
 		}

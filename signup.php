@@ -15,8 +15,8 @@
     <form action="include/signup-inc.php" method="POST">
         <div class="login__popout">
             <div class="login__inputs">
-                <label for="uid"><strong>Username <span class="onBlur">*this is required</span></strong>
-                    <input type="text" name="uid" placeholder="Enter Username" required />
+                <label for="u_id"><strong>Username <span class="onBlur">*this is required</span></strong>
+                    <input type="text" name="u_id" placeholder="Enter Username" required />
                 </label>
 
                 <label for="email"><strong>Email <span class="onBlur">*this is required</span></strong>

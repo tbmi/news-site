@@ -1,7 +1,7 @@
 <?php
 
 if(isset($_POST['submit'])) {
-	$uid = $_POST['uid'];
+	$u_id = $_POST['u_id'];
 	$email = $_POST['email'];
 	$password = $_POST['password'];
 	$rptpassword = $_POST['rptpassword'];
@@ -9,7 +9,7 @@ if(isset($_POST['submit'])) {
 	include '../classes/dbh-classes.php';
 	include '../classes/signup-classes.php';
 	include '../classes/signup-classes_contr.php';
-	$signup = new SignupContr($uid, $email, $password, $rptpassword);
+	$signup = new SignupContr($u_id, $email, $password, $rptpassword);
 
 	$signup->signupUser();
 

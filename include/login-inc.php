@@ -1,14 +1,14 @@
 <?php
 
 if (isset($_POST["submit"])) {
-	$uid = $_POST["uid"];
+	$u_id = $_POST["u_id"];
 	$password = $_POST["password"];
 	$remember = $_POST["remember"];
 
 	include "../classes/dbh-classes.php";
 	include "../classes/login-classes.php";
 	include "../classes/login-classes_contr.php";
-	$login = new LoginContr($uid, $password, $remember);
+	$login = new LoginContr($u_id, $password, $remember);
 
 	$login->loginUser();
 

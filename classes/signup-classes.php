@@ -1,24 +1,34 @@
 <?php
 
-class Signup extends Dbh
+class Signup
 {
-	protected function checkUser($uid, $email)
+	protected function checkUser($u_id, $email)
 	{
 		try {
-			$dbh = new Dbh();
-			$conn = $dbh->connect();
+			$serverName = "TAKY-PC\SQLEXPRESS";
+			$connectionOptions = array("Database"=>"NewsSite",
+				"Uid"=>"", "PWD"=>"");
+			$conn = sqlsrv_connect($serverName, $connectionOptions);
+			if($conn == false) {
+				$testfile = fopen("test.txt", "a"); fwrite($testfile, "checkUser Connection Failed \n"); fclose($testfile);
+				die(print_r(sqlsrv_errors(), true));
+			}
+			else {
+				$testfile = fopen("test.txt", "a"); fwrite($testfile, "checkUser Connection Established \n"); fclose($testfile);
+			}
 			$tsql = "SELECT users_id FROM users WHERE users_id = ? OR users_email = ?";
-			$status = sqlsrv_query($conn, $tsql);
-			$statusRows = sqlsrv_num_rows($status);
+			$parameter = array($u_id, $email);
+			$stmt = sqlsrv_query($conn, $tsql, $parameter, array("Scrollable" => 'static'));
 
-			if (!$status) {
-				$status == null;
-				header("location: ../signup.php?error=statusfailed");
+			if (!$stmt) {
+				$stmt = false;
+				header("location: ../signup.php?error=statusfailed1");
 				exit();
 			}
 
-			$resultCheck = "";
-			if ($statusRows > 0) {
+			$stmtRows = sqlsrv_num_rows($stmt);
+			$resultCheck = true;
+			if ($stmtRows > 0) {
 				$resultCheck = false;
 			} else {
 				$resultCheck = true;
@@ -30,24 +40,32 @@ class Signup extends Dbh
 		}
 	}
 
-	protected function setUser($uid, $password, $email)
+	protected function setUser($u_id, $password, $email)
 	{
 		try {
-			$dbh = new Dbh();
-			$conn = $dbh->connect();
+			$serverName = "TAKY-PC\SQLEXPRESS";
+			$connectionOptions = array("Database"=>"NewsSite",
+				"Uid"=>"", "PWD"=>"");
+			$conn = sqlsrv_connect($serverName, $connectionOptions);
+			if($conn == false) {
+				fwrite(fopen("test.txt", "a"), "setUser Connection Failed \n"); fclose(fopen("test.txt", "a"));
+				die(print_r(sqlsrv_errors(), true));
+			}
+			else {
+				fwrite(fopen("test.txt", "a"), "setUser Connection Established \n"); fclose(fopen("test.txt", "a"));
+			}
 			$hashedPwd = password_hash($password, PASSWORD_DEFAULT);
-			$tsql = "INSERT INTO users (users_uid, users_pwd, users_email) VALUES (?, $hashedPwd, ?)";
+			$tsql = "INSERT INTO users (users_id, users_pwd, users_email) VALUES (?, $hashedPwd, ?)";
+			$parameter = array($u_id, $email);
 
+			$stmt = sqlsrv_query($conn, $tsql, $parameter, array("Scrollable" => 'static'));
 
-			$status = sqlsrv_query($conn, $tsql);
-
-			if (!$status) {
-				$status == null;
-				header("location: ../signup.php?error=statusfailed");
+			if (!$stmt) {
+				header("location: ../signup.php?error=statusfailed2");
 				exit();
 			}
 
-			$status = null;
+			$stmt = false;
 		} catch (Exception $e) {
 			echo ("Error!");
 		}

@@ -1,15 +1,17 @@
 <?php
 
+$testfile = fopen("test.txt", "a");
+
 class SignupContr extends Signup
 {
-	private $uid;
+	private $u_id;
 	private $email;
 	private $password;
 	private $rptpassword;
 
-	public function __construct($uid, $email, $password, $rptpassword)
+	public function __construct($u_id, $email, $password, $rptpassword)
 	{
-		$this->uid = $uid;
+		$this->u_id = $u_id;
 		$this->email = $email;
 		$this->password = $password;
 		$this->rptpassword = $rptpassword;
@@ -34,13 +36,13 @@ class SignupContr extends Signup
 			exit();
 		}
 
-		$this->setUser($this->uid, $this->password, $this->email);
+		$this->setUser($this->u_id, $this->password, $this->email);
 	}
 
 	private function emptyInput()
 	{
-		$result = "";
-		if (empty($this->uid) || empty($this->email) || empty($this->password) || empty($this->rptpassword)) {
+		$result = false;
+		if (empty($this->u_id) || empty($this->email) || empty($this->password) || empty($this->rptpassword)) {
 			$result = false;
 		} else {
 			$result = true;
@@ -50,7 +52,7 @@ class SignupContr extends Signup
 
 	private function invalidEmail()
 	{
-		$result = "";
+		$result = false;
 		if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
 			$result = false;
 		} else {
@@ -61,7 +63,7 @@ class SignupContr extends Signup
 
 	private function pwdMatch()
 	{
-		$result = "";
+		$result = false;
 		if ($this->password !== $this->rptpassword) {
 			$result = false;
 		} else {
@@ -72,8 +74,8 @@ class SignupContr extends Signup
 
 	private function uidTakenCheck()
 	{
-		$result = "";
-		if (!$this->checkUser($this->uid, $this->email)) {
+		$result = false;
+		if (!$this->checkUser($this->u_id, $this->email)) {
 			$result = false;
 		} else {
 			$result = true;
@@ -82,3 +84,5 @@ class SignupContr extends Signup
 		return $result;
 	}
 }
+
+fclose(fopen("test.txt", "a"));
