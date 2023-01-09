@@ -10,41 +10,43 @@ class Login
 				"Uid"=>"", "PWD"=>"");
 			$conn = sqlsrv_connect($serverName, $connectionOptions);
 			if($conn == false) {
-				fwrite(fopen("test.txt", "a"), "getUser Connection Failed \n"); fclose(fopen("test.txt", "a"));
+				fwrite(fopen("../test.txt", "a"), "getUser Connection Failed \n"); fclose(fopen("../test.txt", "a"));
 				die(print_r(sqlsrv_errors(), true));
 			}
 			else {
-				fwrite(fopen("test.txt", "a"), "getUser Connection Established \n"); fclose(fopen("test.txt", "a"));
+				fwrite(fopen("../test.txt", "a"), "getUser Connection Established \n"); fclose(fopen("../test.txt", "a"));
 			}
-			$tsql = "SELECT users_pwd FROM users WHERE users_id = ? OR users_email = ?";
+			$tsql = "SELECT users_id, users_pwd FROM users WHERE users_id = ? OR users_email = ?";
 			$parameters = array($u_id, $u_id);
-			$stmt = sqlsrv_query($conn, $tsql, $parameters, array("Scrollable" => 'static'));
+			$hash_query = sqlsrv_query($conn, $tsql, $parameters, array("Scrollable" => 'static'));
 
-			if (!$stmt) {
+			if (!$hash_query) {
 				header("location: ../login.php?error=statusfailed");
 				exit();
 			}
 
-			$stmtRows = sqlsrv_num_rows($stmt);
-			if (!$stmtRows or $stmt == 0) {
-				$stmt = false;
+			$stmtRows = sqlsrv_num_rows($hash_query);
+			if (!$stmtRows or $hash_query == 0) {
+				$hash_query = false;
 				header("location: ../login.php?error=usernotfounduid");
 				exit();
 			}
 
-			$stmtFetch = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
-			$pwdHashed = $stmtFetch;
-			$checkPwd = password_verify($password, $pwdHashed[0]["users_pwd"]);
+			$hash = sqlsrv_fetch_array($hash_query, SQLSRV_FETCH_ASSOC);
+			fwrite(fopen("../test.txt", "a"), implode($hash)); fclose(fopen("../test.txt", "a"));
+			$checkPwd = password_verify($password, $hash['users_pwd']);
 
 			if (!$checkPwd) {
-				$stmt = false;
+				$hash = false;
 				header("location: ../login.php?error=wrongpassword");
 				exit();
 			} elseif ($checkPwd == true) {
 				$tsql = "SELECT * FROM users WHERE users_id = ? OR users_email = ? AND users_pwd = ?";
+				$parameter = array($u_id, $u_id, $hash['users_pwd']);
+				$stmt = sqlsrv_query($conn, $tsql, $parameter, array("Scrollable" => 'static'));
 
 				if (!$stmt) {
-					header("location: ../login.php?error=statusfailed");
+					header("location: ../login.php?error=stmtfailed");
 					exit();
 				}
 
@@ -54,15 +56,13 @@ class Login
 					exit();
 				}
 
-				$user = $stmtFetch;
 				session_start();
-				$_SESSION['userid'] = $user[0]["users_id"];
-				$_SESSION['useruid'] = $user[0]["users_uid"];
+				$_SESSION['userid'] = $hash['users_id'];
 
-				$stmt = false;
+				$hash = false;
 			}
 
-			$stmt = false;
+			$hash = false;
 		} catch (Exception $e) {
 			echo ("Error!");
 		}

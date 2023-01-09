@@ -3,8 +3,12 @@
 if (isset($_POST["submit"])) {
 	$u_id = $_POST["u_id"];
 	$password = $_POST["password"];
-	$remember = $_POST["remember"];
-
+	try {
+		$remember = $_POST["remember"];
+	}
+	catch (Exception $e) {
+		$remember = false;
+	}
 	include "../classes/dbh-classes.php";
 	include "../classes/login-classes.php";
 	include "../classes/login-classes_contr.php";

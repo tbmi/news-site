@@ -17,10 +17,10 @@ class LoginContr extends Login
 	{
 		$result = false;
 		if (empty($this->u_id) || empty($this->password)) {
-			fwrite(fopen("test.txt", "a"), "Empty Input false \n");
+			fwrite(fopen("../test.txt", "a"), "Empty Input false \n");
 			$result = false;
 		} else {
-			fwrite(fopen("test.txt", "a"), "Empty Input true \n");
+			fwrite(fopen("../test.txt", "a"), "Empty Input true \n");
 			$result = true;
 		}
 		return $result;
