@@ -1,0 +1,19 @@
+forgot password
+    reset by creating a token and expiry, put into database then when they click on link check token 
+    and expiry and if after expiry or wrong token then kick em and delete record. on every check delete all 
+    expired records.
+remember me
+account page
+user preference and change hero container depending
+    carousel of top 3 news this week
+admin logins 
+    check if user has users_auth = 1
+    if they do then start $_SESSION['userauth'] = true
+    check for $_SESSION['userauth'] in navbar 
+        then display editor navbar__links
+            takes them to editor php page
+        else dont 
+    
+
+news page template
+    filter menu at the top

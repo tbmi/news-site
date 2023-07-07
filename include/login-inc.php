@@ -3,10 +3,10 @@
 if (isset($_POST["submit"])) {
 	$u_id = $_POST["u_id"];
 	$password = $_POST["password"];
-	try {
+	if (isset($_GET["remember"])) {
 		$remember = $_POST["remember"];
 	}
-	catch (Exception $e) {
+	else {
 		$remember = false;
 	}
 	include "../classes/dbh-classes.php";

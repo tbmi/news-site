@@ -1,28 +1,18 @@
 <?php
 
-class Signup
+class Signup extends Dbh
 {
 	protected function checkUser($u_id, $email)
 	{
 		try {
-			$serverName = "TAKY-PC\SQLEXPRESS";
-			$connectionOptions = array("Database"=>"NewsSite",
-				"Uid"=>"", "PWD"=>"");
-			$conn = sqlsrv_connect($serverName, $connectionOptions);
-			if($conn == false) {
-				fwrite(fopen("../test.txt", "a"), "checkUser Connection Failed \n"); fclose(fopen("../test.txt", "a"));
-				die(print_r(sqlsrv_errors(), true));
-			}
-			else {
-				fwrite(fopen("../test.txt", "a"), "checkUser Connection Established \n"); fclose(fopen("../test.txt", "a"));
-			}
+			$db = new Dbh();
+			$conn = $db->connect();
 			$tsql = "SELECT users_id FROM users WHERE users_id = ? OR users_email = ?";
 			$parameter = array($u_id, $email);
 			$stmt = sqlsrv_query($conn, $tsql, $parameter, array("Scrollable" => 'static'));
 
 			if (!$stmt) {
 				header("location: ../signup.php?error=selectfail");
-				fwrite(fopen("../test.txt", "a"), "statement failed \n"); fclose(fopen("../test.txt", "a"));
 				exit();
 			}
 
@@ -40,23 +30,14 @@ class Signup
 		}
 	}
 
-	protected function setUser($u_id, $password, $email)
+	protected function setUser($u_id, $password, $email, $preference)
 	{
 		try {
-			$serverName = "TAKY-PC\SQLEXPRESS";
-			$connectionOptions = array("Database"=>"NewsSite",
-				"Uid"=>"", "PWD"=>"");
-			$conn = sqlsrv_connect($serverName, $connectionOptions);
-			if($conn == false) {
-				fwrite(fopen("../test.txt", "a"), "setUser Connection Failed \n"); fclose(fopen("../test.txt", "a"));
-				die(print_r(sqlsrv_errors(), true));
-			}
-			else {
-				fwrite(fopen("../test.txt", "a"), "setUser Connection Established \n"); fclose(fopen("../test.txt", "a"));
-			}
+			$db = new Dbh();
+			$conn = $db->connect();
 			$hashedPwd = password_hash($password, PASSWORD_DEFAULT);
-			$tsql = "INSERT INTO users (users_id, users_pwd, users_email) VALUES (?, ?, ?)";
-			$parameter = array($u_id, $hashedPwd, $email);
+			$tsql = "INSERT INTO users (users_id, users_pwd, users_email, users_preference) VALUES (?, ?, ?, ?)";
+			$parameter = array($u_id, $hashedPwd, $email, $preference);
 
 			$stmt = sqlsrv_query($conn, $tsql, $parameter, array("Scrollable" => 'static'));
 

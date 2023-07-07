@@ -1,20 +1,20 @@
 <?php
 
-$testfile = fopen("test.txt", "a");
-
 class SignupContr extends Signup
 {
 	private $u_id;
 	private $email;
 	private $password;
 	private $rptpassword;
+	private $preference;
 
-	public function __construct($u_id, $email, $password, $rptpassword)
+	public function __construct($u_id, $email, $password, $rptpassword, $preference)
 	{
 		$this->u_id = $u_id;
 		$this->email = $email;
 		$this->password = $password;
 		$this->rptpassword = $rptpassword;
+		$this->preference = $preference;
 	}
 
 	public function signupUser()
@@ -36,7 +36,7 @@ class SignupContr extends Signup
 			exit();
 		}
 
-		$this->setUser($this->u_id, $this->password, $this->email);
+		$this->setUser($this->u_id, $this->password, $this->email, $this->preference);
 	}
 
 	private function emptyInput()
@@ -84,5 +84,3 @@ class SignupContr extends Signup
 		return $result;
 	}
 }
-
-fclose(fopen("test.txt", "a"));

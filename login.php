@@ -3,35 +3,32 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 
 <head>
-    <title>TWI - Login</title>
     <?php include "include/head.php" ?>
+    <title>TWI - Login</title>
 </head>
 
 <body>
     <?php include_once "include/navbar.php" ?>
     <form action="include/login-inc.php" method="post">
-        <div class="login__popout">
-            <div class="login__inputs">
+        <div class="form__box">
+            <div class="form__inputs">
+                <label for="u_id"><strong>Username</strong></label>
+                <input id="u_id" type="text" name="u_id" placeholder="Enter Username" required >
 
-                <label for="u_id"><strong>Username <span>*this is required</span></strong></label>
-                <input type="text" name="u_id" placeholder="Enter Username" required />
-
-                <label for="password"><strong>Password <span>*this is required</span></strong></label>
-                <input type="password" name="password" placeholder="Enter Password" required />
+                <label for="password"><strong>Password</strong></label>
+                <input id="password" type="password" name="password" placeholder="Enter Password" required >
 
                 <label>
-                    <input type="checkbox" name="remember" id="remember" /> Remember me
+                    <input type="checkbox" name="remember" id="remember" > Remember me
                 </label>
 
-                <button class="button" name="submit">Log In</button>
+                <button class="submit--button" name="submit">Log In</button>
                 <ul class="sidetrack">
-                    <li id="forgot" class="sidetrack--item"><a href="#forgot">Forgot your password?</a></li>
+                    <li id="forgot" class="sidetrack--item"><a href="forgotForm.php">Forgot your password?</a></li>
                     <li id="signup" class="sidetrack--item"><a href="signup.php">Don't have an account?</a></li>
                 </ul>
             </div>
         </div>
-
     </form>
 </body>
-
 </html>
